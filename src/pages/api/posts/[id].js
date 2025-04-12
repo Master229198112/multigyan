@@ -7,27 +7,36 @@ export default async function handler(req, res) {
 
   await dbConnect()
 
+  if (method === 'GET') {
+    try {
+      // GET by slug
+      const post = await Post.findOne({ slug: id })  // slug === id
+      if (!post) return res.status(404).json({ success: false, error: 'Post not found' })
+      return res.status(200).json({ success: true, data: post })
+    } catch (error) {
+      return res.status(500).json({ success: false, error: error.message })
+    }
+  }
+
   if (method === 'PUT') {
     try {
       const updated = await Post.findByIdAndUpdate(id, req.body, { new: true })
       if (!updated) return res.status(404).json({ success: false, error: 'Post not found' })
-      res.status(200).json({ success: true, data: updated })
+      return res.status(200).json({ success: true, data: updated })
     } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
+      return res.status(400).json({ success: false, error: error.message })
     }
   }
 
-  else if (method === 'DELETE') {
+  if (method === 'DELETE') {
     try {
       await Post.findByIdAndDelete(id)
-      res.status(200).json({ success: true, message: 'Post deleted' })
+      return res.status(200).json({ success: true, message: 'Post deleted' })
     } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
+      return res.status(400).json({ success: false, error: error.message })
     }
   }
 
-  else {
-    res.setHeader('Allow', ['PUT', 'DELETE'])
-    res.status(405).end(`Method ${method} Not Allowed`)
-  }
+  res.setHeader('Allow', ['GET', 'PUT', 'DELETE'])
+  res.status(405).end(`Method ${method} Not Allowed`)
 }
