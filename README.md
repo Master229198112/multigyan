@@ -1,40 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Multigyan Blog Platform
 
-## Getting Started
+Multigyan is a modern, full-stack blogging platform built with **Next.js**, **React**, and **MongoDB**. It allows content creators to write, edit, and publish markdown-based posts, while readers can browse, filter, and comment on posts. The project is fully responsive, supports dark mode, and is deployed on **Vercel**.
 
-First, run the development server:
+---
 
+## 🚀 Features
+
+### 🖥️ Frontend
+- Built with **Next.js (Pages Router)** and **Tailwind CSS**
+- **Responsive UI** with mobile-first design
+- **Dark Mode** toggle (stored in `localStorage`)
+- Markdown support via `react-markdown`
+- Home page with:
+  - Category filter
+  - Tag filter
+  - Pagination
+- Blog post page:
+  - Dynamic routing via `slug`
+  - Markdown-rendered content
+  - Comment section (submit + view)
+
+### ✏️ Admin Panel
+- Create post with:
+  - Title, slug, content, category, tags, image URL
+  - Auto-generated date + read time
+- Edit & delete posts
+- Live markdown preview while editing
+
+### 💬 Comment System
+- Stored in MongoDB with `postSlug` reference
+- Comment form: name, optional email, message
+- Displays all comments under each post
+
+### 🔗 Backend (API)
+- `/api/posts` (GET, POST)
+- `/api/posts/[id]` (PUT, DELETE)
+- `/api/posts/[slug]` (GET single post)
+- `/api/comments` (GET by slug, POST new comment)
+
+---
+
+## 🛠️ Technologies
+- **Next.js (Pages Router)**
+- **React**
+- **Tailwind CSS**
+- **MongoDB Atlas**
+- **Mongoose**
+- **Vercel** (Deployment)
+
+---
+
+## 🧪 Local Setup
+
+### 1. Clone the Repo
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/master229198112/multigyan.git
+cd multigyan
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### 3. Configure Environment
+Create a `.env.local` file:
+```
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/multigyan
+```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### 4. Run the App
+```bash
+npm run dev
+```
+Visit: [http://localhost:3000](http://localhost:3000)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧑‍💻 Folder Structure
+```
+multigyan/
+├── src/
+│   ├── components/         # Navbar, Footer, BlogCard, Comments, etc
+│   ├── lib/                # dbConnect.js (MongoDB connection)
+│   ├── models/             # Mongoose schemas (Post, Comment)
+│   ├── pages/              # Page routes (home, blog, admin, API)
+│   │   ├── blog/           # [slug].js
+│   │   ├── admin/          # index.js, edit/[id].js, posts.js
+│   │   └── api/            # posts/, comments/
+│   └── styles/             # Tailwind + custom styles
+├── public/                 # Static assets
+├── .env.local              # MongoDB URI
+├── tailwind.config.js      # Tailwind setup
+├── package.json            # Dependencies
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✅ Deployment
+Deployed using **Vercel**
+1. Push repo to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import the project and add `MONGODB_URI` as an environment variable
+4. Deploy 🚀
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📌 Next Steps / Todo
+- Add Admin Authentication (NextAuth)
+- Add Likes / Views tracking
+- Add Post Drafts
+- Upload images instead of URLs
+- Social Sharing buttons
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Contact
+For any questions or contributions, feel free to reach out:
+- **Email**: vishalkumar.sharma37@gmail.com
+- **GitHub**: [Master229198112](https://github.com/Master229198112)
+- **LinkedIn**: [Vishal Kumar Sharma](https://www.linkedin.com/in/mastervishal/)
