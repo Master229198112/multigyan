@@ -1,122 +1,142 @@
-# Multigyan Blog Platform
+# 📰 Multigyan Blog Platform
 
-Multigyan is a modern, full-stack blogging platform built with **Next.js**, **React**, and **MongoDB**. It allows content creators to write, edit, and publish markdown-based posts, while readers can browse, filter, and comment on posts. The project is fully responsive, supports dark mode, and is deployed on **Vercel**.
-
----
-
-## 🚀 Features
-
-### 🖥️ Frontend
-- Built with **Next.js (Pages Router)** and **Tailwind CSS**
-- **Responsive UI** with mobile-first design
-- **Dark Mode** toggle (stored in `localStorage`)
-- Markdown support via `react-markdown`
-- Home page with:
-  - Category filter
-  - Tag filter
-  - Pagination
-- Blog post page:
-  - Dynamic routing via `slug`
-  - Markdown-rendered content
-  - Comment section (submit + view)
-
-### ✏️ Admin Panel
-- Create post with:
-  - Title, slug, content, category, tags, image URL
-  - Auto-generated date + read time
-- Edit & delete posts
-- Live markdown preview while editing
-
-### 💬 Comment System
-- Stored in MongoDB with `postSlug` reference
-- Comment form: name, optional email, message
-- Displays all comments under each post
-
-### 🔗 Backend (API)
-- `/api/posts` (GET, POST)
-- `/api/posts/[id]` (PUT, DELETE)
-- `/api/posts/[slug]` (GET single post)
-- `/api/comments` (GET by slug, POST new comment)
+Multigyan is a modern, multi-niche blogging platform built with **Next.js**, **MongoDB**, and **Tailwind CSS**. It supports public blog submissions, admin moderation, comments, email notifications, and newsletter signups. Deployed on **Vercel** and connected to a **MongoDB Atlas** database.
 
 ---
 
-## 🛠️ Technologies
-- **Next.js (Pages Router)**
-- **React**
-- **Tailwind CSS**
-- **MongoDB Atlas**
-- **Mongoose**
-- **Vercel** (Deployment)
+## 🌐 Live URL
+**https://www.multigyan.in**
 
 ---
 
-## 🧪 Local Setup
+## ✅ Features Implemented
 
-### 1. Clone the Repo
-```bash
-git clone https://github.com/master229198112/multigyan.git
-cd multigyan
-```
+### ✨ General
+- Fully responsive design
+- Dark/Light mode toggle with persistent state
+- Custom domain setup via GoDaddy
+- GoDaddy business email (`username@multigyan.in`) used for mail communication
 
-### 2. Install Dependencies
-```bash
-npm install
-```
+### 📰 Blogging
+- Homepage with latest posts (`/`)
+- Blog listing (`/blog`)
+- Dynamic single post pages (`/blog/[slug]`)
+- Category + Tag filters
+- Estimated reading time per post
+- Markdown rendering with live preview
+- Post view counter (tracked in MongoDB)
+- Social sharing buttons (Twitter, LinkedIn, WhatsApp)
 
-### 3. Configure Environment
-Create a `.env.local` file:
-```
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/multigyan
-```
+### ✍️ Blog Submission
+- `/blog/submit`: Public blog submission form
+- Unapproved posts are hidden from public
+- Admin moderation panel for approving/rejecting posts
+- Admin post creation, editing, and deletion via dashboard
+- Admin gets email alert on new blog submissions
+- Public user gets email confirmation on submission
 
-### 4. Run the App
-```bash
-npm run dev
-```
-Visit: [http://localhost:3000](http://localhost:3000)
+### 💬 Comments
+- Readers can post comments on blog posts
+- Comments stored in MongoDB with timestamp
+- Admin gets email notification on each new comment
+- Auto-reply to the commenter (if email provided)
+
+### 👤 Admin Authentication
+- Email/password-based login via `/admin/login`
+- Session stored in cookies (`admin=loggedin`)
+- Protected admin routes using `middleware.js`
+- Navbar updates based on login state
+
+### 📬 Contact Page
+- `/contact` page with a working contact form
+- Sends email to `username@multigyan.in` via Nodemailer (GoDaddy SMTP)
+- User receives a confirmation email
+
+### 📥 Newsletter Signup
+- `/subscribe` page
+- Stores name & email in `subscribers` MongoDB collection
+- Prevents duplicate entries
+
+### 📊 Analytics
+- Admin dashboard (`/admin/dashboard`) with Chart.js
+- Bar chart showing post view counts
 
 ---
 
-## 🧑‍💻 Folder Structure
+## 🔧 Tech Stack
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB Atlas
+- **Auth**: Custom session using cookies
+- **Email**: Nodemailer + GoDaddy SMTP (`smtpout.secureserver.net`)
+- **Hosting**: Vercel
+
+---
+
+## 📁 Folder Structure (Based on Your Project)
 ```
 multigyan/
 ├── src/
-│   ├── components/         # Navbar, Footer, BlogCard, Comments, etc
-│   ├── lib/                # dbConnect.js (MongoDB connection)
-│   ├── models/             # Mongoose schemas (Post, Comment)
-│   ├── pages/              # Page routes (home, blog, admin, API)
-│   │   ├── blog/           # [slug].js
-│   │   ├── admin/          # index.js, edit/[id].js, posts.js
-│   │   └── api/            # posts/, comments/
-│   └── styles/             # Tailwind + custom styles
-├── public/                 # Static assets
-├── .env.local              # MongoDB URI
-├── tailwind.config.js      # Tailwind setup
-├── package.json            # Dependencies
+│   ├── components/         # BlogCard, Comments, Footer, Navbar
+│   ├── lib/                # dbConnect.js
+│   ├── models/             # Comment.js, Post.js, Subscriber.js
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── edit/[id].js
+│   │   │   ├── create.js
+│   │   │   ├── index.js        # Admin login
+│   │   │   ├── login.js
+│   │   │   └── posts.js        # Admin dashboard
+│   │   ├── api/
+│   │   │   ├── admin/login.js, logout.js
+│   │   │   ├── comments/index.js
+│   │   │   ├── posts/[id].js, index.js
+│   │   │   └── views/[slug].js
+│   │   ├── blog/
+│   │   │   ├── [slug].js
+│   │   │   ├── index.js
+│   │   │   └── submit.js
+│   │   ├── contact.js
+│   │   ├── index.js
+│   │   ├── subscribe.js
+│   │   └── _app.js, _document.js
+│   ├── styles/              # Global Tailwind styles
+│   └── middleware.js        # Admin route protection
+├── .env.local               # Environment variables
+├── tailwind.config.js
+├── package.json, postcss.config.js, next.config.js, etc.
+└── README.md
 ```
 
 ---
 
-## ✅ Deployment
-Deployed using **Vercel**
-1. Push repo to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Import the project and add `MONGODB_URI` as an environment variable
-4. Deploy 🚀
+## 🔐 Environment Variables
+```env
+MONGODB_URI=mongodb+srv://...      # MongoDB Atlas connection string
+EMAIL_USER=username@multigyan.in   # GoDaddy email
+EMAIL_PASS=your-email-password     # Email SMTP password
+EMAIL_TO=username@multigyan.in     # Where admin receives contact/alerts
+```
 
 ---
 
-## 📌 Next Steps / Todo
-- Add Admin Authentication (NextAuth)
-- Add Likes / Views tracking
-- Add Post Drafts
-- Upload images instead of URLs
-- Social Sharing buttons
+## 🛠️ To Do / Future Enhancements
+- reCAPTCHA integration for all forms
+- Comment moderation and approval workflow
+- Post scheduling (publish later)
+- Draft saving and autosave while writing
+- Mailchimp integration for newsletter automation
+- Multi-user admin roles and activity tracking
 
 ---
 
-## Contact
+## 📬 Contact/Questions?
+Feel free to reach out via the [Contact Page](https://www.multigyan.in/contact) or email `vishal@multigyan.in`
 For any questions or contributions, feel free to reach out:
-- **Email**: vishalkumar.sharma37@gmail.com
+
 - **GitHub**: [Master229198112](https://github.com/Master229198112)
 - **LinkedIn**: [Vishal Kumar Sharma](https://www.linkedin.com/in/mastervishal/)
+
+---
+
+> Built with ❤️ by Team Multigyan
