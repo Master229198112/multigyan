@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/posts')
+      const res = await fetch('/api/posts?approved=true') // ✅ Updated URL
       const data = await res.json()
       if (data.success) {
         setPosts(data.data)

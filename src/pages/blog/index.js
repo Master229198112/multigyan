@@ -5,7 +5,7 @@ export default function BlogPage() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    fetch('/api/posts')
+    fetch('/api/posts?approved=true') // ✅ Only fetch approved posts
       .then(res => res.json())
       .then(data => {
         if (data.success) setPosts(data.data)
