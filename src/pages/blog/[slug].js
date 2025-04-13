@@ -20,6 +20,9 @@ export default function PostPage() {
         .then(data => {
           if (data.success) {
             setPost(data.data)
+
+            // 🔄 Increment views
+            fetch(`/api/views/${slug}`, { method: 'POST' })
           }
           setLoading(false)
         })
@@ -40,7 +43,11 @@ export default function PostPage() {
       />
       <p className="text-sm text-blue-500 uppercase">{post.category}</p>
       <h1 className="text-3xl font-bold mt-2 mb-2">{post.title}</h1>
-      <div className="text-sm text-gray-500 mb-4">{post.date} • {post.readTime}</div>
+      
+      {/* ✅ Updated with view count */}
+      <p className="text-sm text-gray-500 mb-4">
+        {post.date} • {post.readTime} • 👁️ {post.views || 0} views
+      </p>
 
       <div className="prose dark:prose-invert max-w-none">
         <ReactMarkdown>{post.content}</ReactMarkdown>

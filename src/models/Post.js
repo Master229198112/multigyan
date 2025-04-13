@@ -31,7 +31,11 @@ const PostSchema = new mongoose.Schema(
     },
     readTime: {
       type: String,
-    }
+    },
+    views: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
