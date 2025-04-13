@@ -48,10 +48,12 @@ export default function Home() {
         <div className="mb-12">
           <a href={`/blog/${heroPost.slug}`}>
             <div className="relative h-96 rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={heroPost.image || 'https://picsum.photos/1200/600'}
                 alt={heroPost.title}
                 className="w-full h-full object-cover brightness-75"
+                width={500}
+                height={300}
               />
               <div className="absolute bottom-6 left-6 text-white">
                 <span className="text-sm uppercase text-blue-300">{heroPost.category}</span>

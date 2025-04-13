@@ -12,7 +12,7 @@ export default function Terms() {
         </p>
         <p className="mb-4">
           We are not liable for any loss or damage arising from your use of the site.
-          All blog content reflects the author's opinion and not professional advice.
+          All blog content reflects the author&apos;s opinion and not professional advice.
         </p>
         <p>Last updated: {new Date().toLocaleDateString()}</p>
       </div>

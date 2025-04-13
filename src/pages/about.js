@@ -9,7 +9,7 @@ export default function About() {
           Our mission is to empower creators by offering a space to publish ideas, share knowledge, and inspire others. We believe in the value of open expression and meaningful conversations.
         </p>
         <p className="text-gray-700 dark:text-gray-300">
-          Whether you're here to read, write, or contribute, thank you for being part of our growing community. 💙
+          Whether you&apos;re here to read, write, or contribute, thank you for being part of our growing community. 💙
         </p>
       </div>
     )

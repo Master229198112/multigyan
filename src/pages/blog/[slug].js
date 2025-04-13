@@ -49,7 +49,7 @@ export default function PostPage() {
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 h-1 bg-blue-600 z-50" id="scroll-progress" />
 
-      <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="max-w-3xl mx-auto px-4 py-10 pt-20">
         {/* Cover Image */}
         <div className="relative h-72 sm:h-96 mb-6 rounded-lg overflow-hidden shadow">
           <Image
