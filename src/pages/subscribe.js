@@ -26,7 +26,7 @@ export default function Subscribe() {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-10">
+    <div className="max-w-xl mx-auto px-4 py-10 pt-20">
       <h1 className="text-2xl font-bold mb-4">📬 Subscribe to Multigyan</h1>
       <p className="mb-4 text-gray-700 dark:text-gray-300">Get the latest blog posts and updates directly in your inbox.</p>
 
