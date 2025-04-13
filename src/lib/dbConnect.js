@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+let mongoose
 
 let cached = global.mongoose
 
@@ -8,6 +8,11 @@ if (!cached) {
 
 async function dbConnect() {
   if (cached.conn) return cached.conn
+
+  if (!mongoose) {
+    // Dynamically import mongoose (lazy load)
+    mongoose = await import('mongoose').then(mod => mod.default || mod)
+  }
 
   if (!cached.promise) {
     const opts = {
