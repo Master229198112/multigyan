@@ -26,7 +26,7 @@ export default function SubmitPost() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 pt-20">
       <h1 className="text-2xl font-bold mb-4">Submit Your Blog Post</h1>
       {submitted ? (
         <p className="text-green-600">✅ Submitted for review. Awaiting admin approval.</p>

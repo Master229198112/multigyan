@@ -37,7 +37,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 pt-20">
       <h1 className="text-2xl font-bold mb-6">📊 Post View Analytics</h1>
       <div className="bg-white dark:bg-zinc-800 p-4 rounded shadow">
         <Bar data={chartData} options={chartOptions} />

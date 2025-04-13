@@ -56,7 +56,7 @@ export default function EditPost() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 pt-20">
       <h1 className="text-xl font-bold mb-4">Edit Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="text" name="title" value={formData.title} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Title" />

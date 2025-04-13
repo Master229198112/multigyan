@@ -44,7 +44,7 @@ export default function AdminCreatePost() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 pt-20">
       <h1 className="text-xl font-bold mb-4">📝 Create New Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input name="title" onChange={handleChange} placeholder="Title" className="w-full p-2 border rounded" required />

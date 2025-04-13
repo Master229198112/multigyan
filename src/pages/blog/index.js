@@ -13,7 +13,7 @@ export default function BlogPage() {
   }, [])
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
+    <div className="max-w-6xl mx-auto px-4 py-6 pt-20">
       <h1 className="text-3xl font-bold mb-6">All Blog Posts</h1>
 
       {posts.length === 0 ? (
