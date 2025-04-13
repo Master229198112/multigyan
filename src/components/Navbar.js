@@ -1,22 +1,26 @@
 'use client'
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false)
 
-  const checkAuth = () => {
-    const loggedIn = document.cookie.includes('admin=loggedin')
-    setIsAdmin(loggedIn)
-  }
-
   useEffect(() => {
+    const checkAuth = () => {
+      const isLoggedIn = document.cookie.includes('admin=loggedin')
+      setIsAdmin(isLoggedIn)
+    }
+
     checkAuth()
     window.addEventListener('focus', checkAuth)
-    return () => window.removeEventListener('focus', checkAuth)
+
+    return () => {
+      window.removeEventListener('focus', checkAuth)
+    }
   }, [])
 
-  const logout = async () => {
+  const handleLogout = async () => {
     await fetch('/api/admin/logout')
     window.location.href = '/admin/login'
   }
@@ -28,13 +32,12 @@ export default function Navbar() {
           Multigyan
         </Link>
 
-        <div className="space-x-4 flex items-center">
+        <div className="flex items-center space-x-4">
           <Link href="/">Home</Link>
           <Link href="/blog">Blog</Link>
           <Link href="/contact">Contact</Link>
           <Link href="/subscribe">Subscribe</Link>
 
-          {/* ✅ Only show Submit Blog button if NOT admin */}
           {!isAdmin && (
             <Link
               href="/blog/submit"
@@ -48,7 +51,7 @@ export default function Navbar() {
             <>
               <Link href="/admin/posts">Admin</Link>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="px-2 py-1 text-sm border rounded hover:bg-red-500 hover:text-white"
               >
                 Logout
@@ -69,18 +72,18 @@ function ThemeToggle() {
   const [dark, setDark] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme')
-    if (stored === 'dark') {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark')
       setDark(true)
     }
   }, [])
 
   const toggleTheme = () => {
-    const enable = !dark
-    setDark(enable)
+    const enableDark = !dark
+    setDark(enableDark)
 
-    if (enable) {
+    if (enableDark) {
       document.documentElement.classList.add('dark')
       localStorage.setItem('theme', 'dark')
     } else {
