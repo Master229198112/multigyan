@@ -1,17 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-
 import { useEffect, useState } from 'react'
 
 export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
+    // Theme check
     const stored = localStorage.getItem('theme')
     if (stored === 'dark') {
       document.documentElement.classList.add('dark')
       setDarkMode(true)
+    }
+
+    // Admin cookie check
+    if (typeof window !== 'undefined') {
+      const match = document.cookie.includes('admin=loggedin')
+      setIsAdmin(match)
     }
   }, [])
 
@@ -27,6 +34,11 @@ export default function Navbar() {
     }
   }
 
+  const logout = async () => {
+    await fetch('/api/admin/logout')
+    window.location.href = '/admin/login'
+  }
+
   return (
     <nav className="bg-white dark:bg-zinc-900 shadow px-4 py-3 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
@@ -34,7 +46,19 @@ export default function Navbar() {
         <div className="space-x-4 flex items-center">
           <Link href="/">Home</Link>
           <Link href="/blog">Blog</Link>
-          <Link href="/admin">Admin</Link>
+          {isAdmin ? (
+            <>
+              <Link href="/admin/posts">Admin</Link>
+              <button
+                onClick={logout}
+                className="px-2 py-1 text-sm border rounded hover:bg-red-500 hover:text-white"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/admin/login">Admin Login</Link>
+          )}
           <button
             onClick={toggleTheme}
             className="ml-2 px-2 py-1 border border-gray-400 rounded text-sm"
