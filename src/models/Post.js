@@ -27,7 +27,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
     },
     date: {
-      type: String, // We'll store as string (formatted) for frontend use
+      type: String,
     },
     readTime: {
       type: String,
@@ -39,10 +39,13 @@ const PostSchema = new mongoose.Schema(
     approved: {
       type: Boolean,
       default: false
-    }    
+    },
+    publishDate: {
+      type: Date,
+      default: Date.now
+    }        
   },
   { timestamps: true }
 )
 
-// Prevent model overwrite in dev
 export default mongoose.models.Post || mongoose.model('Post', PostSchema)
