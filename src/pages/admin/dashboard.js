@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
@@ -47,12 +48,12 @@ export default function AdminDashboard() {
 
       {/* Download Button */}
       <div className="mb-4">
-        <a
+        <Link
           href="/api/subscribers/download"
           className="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
         >
           Download Subscribers CSV
-        </a>
+        </Link>
       </div>
 
       {/* Subscriber Count Tile */}
