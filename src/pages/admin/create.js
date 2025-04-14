@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import Image from 'next/image'
 
 export default function AdminCreatePost() {
@@ -23,13 +24,8 @@ export default function AdminCreatePost() {
     const { name, value } = e.target
     const updated = { ...formData, [name]: value }
 
-    // Auto-generate slug from title
     if (name === 'title') {
-      updated.slug = value
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, '')
-        .trim()
-        .replace(/\s+/g, '-')
+      updated.slug = value.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-')
     }
 
     setFormData(updated)
@@ -43,12 +39,9 @@ export default function AdminCreatePost() {
     const form = new FormData()
     form.append('file', file)
 
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      body: form
-    })
-
+    const res = await fetch('/api/upload', { method: 'POST', body: form })
     const data = await res.json()
+
     if (data.success) {
       setFormData(prev => ({ ...prev, image: data.thumbnail || data.url }))
     } else {
@@ -66,9 +59,7 @@ export default function AdminCreatePost() {
         ...formData,
         tags: formData.tags.split(',').map(tag => tag.trim()),
         date: new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
+          year: 'numeric', month: 'short', day: 'numeric'
         }),
         readTime: getReadTime(formData.content),
         approved: true
@@ -98,24 +89,12 @@ export default function AdminCreatePost() {
         <input name="category" onChange={handleChange} value={formData.category} placeholder="Category" className="w-full p-2 border rounded" />
         <input name="tags" onChange={handleChange} value={formData.tags} placeholder="Tags (comma separated)" className="w-full p-2 border rounded" />
 
-        {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium mb-1">Upload Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="block w-full p-2 border rounded bg-white text-black"
-          />
+          <input type="file" accept="image/*" onChange={handleImageUpload} className="block w-full p-2 border rounded bg-white text-black" />
           {uploading && <p className="text-sm text-gray-500 mt-1">Uploading image...</p>}
           {formData.image && (
-            <Image
-              src={formData.image}
-              alt="Preview"
-              className="w-full max-w-sm mt-3 rounded shadow"
-              width={500}
-              height={300}
-            />
+            <Image src={formData.image} alt="Preview" width={500} height={300} className="rounded shadow mt-3" />
           )}
         </div>
 
@@ -130,40 +109,22 @@ export default function AdminCreatePost() {
             <h2 className="text-xl font-semibold mb-4">📖 Preview Your Post</h2>
 
             {formData.image && (
-              <Image 
-              src={formData.image} 
-              alt="cover" 
-              className="mb-4 rounded w-full h-64 object-cover" 
-              width={500}
-              height={300}
-              />
+              <Image src={formData.image} alt="cover" width={500} height={300} className="mb-4 rounded w-full h-64 object-cover" />
             )}
 
             <p className="text-xs text-blue-500 uppercase">{formData.category}</p>
             <h1 className="text-2xl font-bold mb-1">{formData.title}</h1>
-            <p className="text-sm text-gray-500 mb-4">
-              {new Date().toLocaleDateString()} • {getReadTime(formData.content)}
-            </p>
+            <p className="text-sm text-gray-500 mb-4">{new Date().toLocaleDateString()} • {getReadTime(formData.content)}</p>
 
-            <div className="prose dark:prose-invert max-w-none prose-lg">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {formData.content}
               </ReactMarkdown>
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowPreview(false)}
-                className="px-4 py-2 text-sm rounded border"
-              >
-                Back to Edit
-              </button>
-              <button
-                onClick={handleFinalSubmit}
-                className="bg-green-600 text-white px-4 py-2 rounded text-sm"
-              >
-                Confirm & Publish
-              </button>
+              <button onClick={() => setShowPreview(false)} className="px-4 py-2 text-sm rounded border">Back to Edit</button>
+              <button onClick={handleFinalSubmit} className="bg-green-600 text-white px-4 py-2 rounded text-sm">Confirm & Publish</button>
             </div>
           </div>
         </div>

@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 
 export default function SubmitPost() {
   const [formData, setFormData] = useState({
@@ -7,8 +10,22 @@ export default function SubmitPost() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
 
-  const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleChange = e => {
+    const { name, value } = e.target
+    const updated = { ...formData, [name]: value }
+
+    if (name === 'title') {
+      updated.slug = value
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+    }
+
+    setFormData(updated)
+  }
 
   const handleImageUpload = async e => {
     const file = e.target.files[0]
@@ -29,8 +46,7 @@ export default function SubmitPost() {
     setUploading(false)
   }
 
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const handleFinalSubmit = async () => {
     const res = await fetch('/api/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -45,21 +61,31 @@ export default function SubmitPost() {
       })
     })
 
-    if (res.ok) setSubmitted(true)
-    else alert('❌ Submission failed.')
+    if (res.ok) {
+      setSubmitted(true)
+      setShowPreview(false)
+    } else {
+      alert('❌ Submission failed.')
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setShowPreview(true)
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6 pt-20">
       <h1 className="text-2xl font-bold mb-4">Submit Your Blog Post</h1>
+
       {submitted ? (
         <p className="text-green-600">✅ Submitted for review. Awaiting admin approval.</p>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input name="title" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Title" required />
-          <input name="slug" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Slug" required />
-          <input name="category" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Category" />
-          <input name="tags" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Tags (comma separated)" />
+          <input name="title" onChange={handleChange} value={formData.title} className="w-full p-2 border rounded" placeholder="Title" required />
+          <input name="slug" value={formData.slug} disabled className="w-full p-2 border rounded bg-gray-100 text-gray-600" />
+          <input name="category" onChange={handleChange} value={formData.category} className="w-full p-2 border rounded" placeholder="Category" />
+          <input name="tags" onChange={handleChange} value={formData.tags} className="w-full p-2 border rounded" placeholder="Tags (comma separated)" />
 
           <div>
             <label className="block text-sm font-medium mb-1">Upload Image</label>
@@ -89,12 +115,64 @@ export default function SubmitPost() {
             placeholder="Your Email (optional)"
             className="w-full p-2 border rounded"
           />
-
-          <textarea name="content" onChange={handleChange} className="w-full h-40 p-2 border rounded" placeholder="Markdown Content" required />
+          <textarea
+            name="content"
+            onChange={handleChange}
+            value={formData.content}
+            className="w-full h-40 p-2 border rounded"
+            placeholder="Markdown Content"
+            required
+          />
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-            Submit for Review
+            Preview Post
           </button>
         </form>
+      )}
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center">
+          <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6">
+            <h2 className="text-xl font-semibold mb-4">📖 Preview Your Post</h2>
+
+            {formData.image && (
+              <Image
+                src={formData.image}
+                alt="cover"
+                width={500}
+                height={300}
+                className="mb-4 rounded w-full h-64 object-cover"
+              />
+            )}
+
+            <p className="text-xs text-blue-500 uppercase">{formData.category}</p>
+            <h1 className="text-2xl font-bold mb-1">{formData.title}</h1>
+            <p className="text-sm text-gray-500 mb-4">
+              {new Date().toLocaleDateString()} • {getReadTime(formData.content)}
+            </p>
+
+            <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {formData.content}
+              </ReactMarkdown>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowPreview(false)}
+                className="px-4 py-2 text-sm rounded border"
+              >
+                Back to Edit
+              </button>
+              <button
+                onClick={handleFinalSubmit}
+                className="bg-green-600 text-white px-4 py-2 rounded text-sm"
+              >
+                Confirm & Submit
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

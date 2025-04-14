@@ -74,10 +74,11 @@ export default function PostPage() {
         </div>
 
         {/* Markdown Content with enhancements */}
-        <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600 hover:prose-a:underline prose-img:rounded-md prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5">
+        <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600 prose-img:rounded-md prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw, rehypeSlug]}
+            linkTarget="_blank"
           >
             {post.content}
           </ReactMarkdown>
