@@ -1,8 +1,13 @@
 import PageWrapper from '@/components/PageWrapper'
+import Head from 'next/head'
 
 export default function Disclaimer() {
   return (
     <PageWrapper title="Disclaimer">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-3xl font-bold mb-4">Disclaimer</h1>
       <p className="mb-4">
         All information on Multigyan is published in good faith and for general informational purposes only.

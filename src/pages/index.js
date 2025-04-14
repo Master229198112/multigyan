@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import BlogCard from '@/components/BlogCard'
+import Head from 'next/head'
 import Image from 'next/image'
 
 const categories = ['All', 'Technology', 'Health', 'Business']
@@ -43,6 +44,10 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 pt-20">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       {/* Hero Post */}
       {heroPost && (
         <div className="mb-12">

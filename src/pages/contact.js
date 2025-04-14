@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PageWrapper from '@/components/PageWrapper'
+import Head from 'next/head'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -25,6 +26,10 @@ export default function Contact() {
 
   return (
     <PageWrapper title="Contact">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-2xl font-bold mb-4">📩 Contact Us</h1>
 
       {submitted ? (

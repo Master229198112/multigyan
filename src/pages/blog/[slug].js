@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Comments from '@/components/Comments'
 import MarkdownPreview from '@/components/MarkdownPreview'
+import Head from 'next/head'
 
 export default function PostPage() {
   const router = useRouter()
@@ -44,6 +45,10 @@ export default function PostPage() {
 
   return (
     <>
+    <Head>
+      <title>Multigyan – Explore the World</title>
+      <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+    </Head>
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 h-1 bg-blue-600 z-50" id="scroll-progress" />
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import Head from 'next/head'
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState([])
@@ -60,7 +62,11 @@ export default function AdminPosts() {
 
     return (
       <li key={post._id} className="flex items-center gap-4 border p-4 rounded bg-white dark:bg-zinc-800">
-        <img src={thumb} alt="thumb" className="w-24 h-16 object-cover rounded" />
+        <Head>
+          <title>Multigyan – Explore the World</title>
+          <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+        </Head>
+        <Image src={thumb} alt="thumb" className="w-24 h-16 object-cover rounded" width={500} height={300} />
         <div className="flex-1">
           <h2 className="text-lg font-semibold">{post.title}</h2>
           <p className="text-sm text-gray-500">{post.date} • {post.readTime}</p>

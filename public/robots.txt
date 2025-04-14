@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.multigyan.in
+
+# Sitemaps
+Sitemap: https://www.multigyan.in/sitemap.xml

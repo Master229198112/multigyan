@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import MarkdownPreview from '@/components/MarkdownPreview'
+import Head from 'next/head'
 
 // Dynamically load the markdown editor to avoid SSR issues
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
@@ -86,6 +87,10 @@ export default function AdminCreatePost() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 pt-20">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-xl font-bold mb-4">📝 Create New Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input name="title" onChange={handleChange} value={formData.title} placeholder="Title" className="w-full p-2 border rounded" required />

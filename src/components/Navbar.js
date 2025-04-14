@@ -3,6 +3,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import Head from 'next/head'
+
+
 
 export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -42,6 +45,10 @@ export default function Navbar() {
       ${isScrolled ? 'bg-white/80 dark:bg-zinc-900/80 py-2 shadow-sm' : 'bg-white dark:bg-zinc-900 py-4'}`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
+        <Head>
+          <title>Multigyan – Explore the World</title>
+          <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+        </Head>
         {/* Logo and Brand Name */}
         <Link href="/" className="flex items-center transition-opacity duration-300 hover:opacity-80">
           <Image

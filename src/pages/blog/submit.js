@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import MarkdownPreview from '@/components/MarkdownPreview'
+import Head from 'next/head'
 
 // Dynamically import SimpleMDE (no SSR issues)
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
@@ -79,6 +80,10 @@ export default function SubmitPost() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 pt-20">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-2xl font-bold mb-4">Submit Your Blog Post</h1>
 
       {submitted ? (

@@ -4,6 +4,7 @@ import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend
 } from 'chart.js'
+import Head from 'next/head'
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
@@ -44,6 +45,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 pt-20">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-2xl font-bold mb-6">📊 Post View Analytics</h1>
 
       {/* Download Button */}

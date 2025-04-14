@@ -1,8 +1,13 @@
 import PageWrapper from '@/components/PageWrapper'
+import Head from 'next/head'
 
 export default function PrivacyPolicy() {
   return (
     <PageWrapper title="Privacy Policy">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
       <p className="mb-4">
         At Multigyan, accessible from www.multigyan.in, one of our main priorities is the privacy of our visitors.

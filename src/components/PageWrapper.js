@@ -4,7 +4,7 @@ export default function PageWrapper({ title, children }) {
   return (
     <>
       <Head>
-        <title>{title} | Multigyan</title>
+        <title>{title} | Multigyan – Explore the World</title>
         <meta name="description" content={`Read ${title} on Multigyan.`} />
         <meta property="og:title" content={`${title} | Multigyan`} />
         <meta property="og:description" content={`Explore ${title} and more at Multigyan.`} />

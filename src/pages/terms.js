@@ -1,8 +1,13 @@
 import PageWrapper from '@/components/PageWrapper'
+import Head from 'next/head'
 
 export default function Terms() {
   return (
     <PageWrapper title="Terms of Service">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-3xl font-bold mb-4">Terms of Service</h1>
       <p className="mb-4">
         These terms and conditions outline the rules and regulations for the use of the Multigyan website.

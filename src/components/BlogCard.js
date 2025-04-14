@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import Head from 'next/head'
 
 export default function BlogCard({ post }) {
   const { title, slug, excerpt, image, category, date, readTime } = post
@@ -7,7 +8,10 @@ export default function BlogCard({ post }) {
   return (
     <Link href={`/blog/${slug}`} className="block group h-full">
       <div className="h-full flex flex-col justify-between overflow-hidden rounded-lg shadow-sm bg-white dark:bg-zinc-900 hover:shadow-xl transition duration-300 ease-in-out">
-        
+        <Head>
+          <title>Multigyan – Explore the World</title>
+          <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+        </Head>
         {/* Image (Fixed Height) */}
         <div className="relative w-full h-48 overflow-hidden">
           <Image

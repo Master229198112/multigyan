@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import Head from 'next/head'
 
 export default function AdminLogin() {
   const router = useRouter()
@@ -27,6 +28,10 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <div className="w-full max-w-md p-6 border rounded shadow bg-black/50 dark:bg-white/5 backdrop-blur-md">
         <h1 className="text-xl font-bold mb-4 text-white dark:text-white">Admin Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

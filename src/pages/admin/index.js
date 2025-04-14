@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import Head from 'next/head'
 
 function getReadTime(content) {
   const words = content?.trim().split(/\s+/).length || 0
@@ -60,6 +61,10 @@ export default function AdminPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 pt-20">
+      <Head>
+        <title>Multigyan – Explore the World</title>
+        <meta name="description" content="Multigyan is your one-stop multi-niche blogging platform. Explore tech, fashion, crypto, finance, and more." />
+      </Head>
       <h1 className="text-2xl font-bold mb-4">Admin Panel - Create New Post</h1>
 
       <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
