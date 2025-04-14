@@ -2,6 +2,9 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
 import Comments from '@/components/Comments'
 
 export default function PostPage() {
@@ -10,7 +13,6 @@ export default function PostPage() {
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Safe window access
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   // Scroll progress bar
@@ -51,14 +53,16 @@ export default function PostPage() {
 
       <div className="max-w-3xl mx-auto px-4 py-10 pt-20">
         {/* Cover Image */}
-        <div className="relative h-72 sm:h-96 mb-6 rounded-lg overflow-hidden shadow">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover w-full h-full"
-          />
-        </div>
+        {post.image && (
+          <div className="relative h-72 sm:h-96 mb-6 rounded-lg overflow-hidden shadow">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              className="object-cover w-full h-full"
+            />
+          </div>
+        )}
 
         {/* Post Metadata */}
         <div className="mb-4">
@@ -69,15 +73,20 @@ export default function PostPage() {
           </p>
         </div>
 
-        {/* Markdown Content */}
-        <div className="prose dark:prose-invert max-w-none prose-lg">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+        {/* Markdown Content with enhancements */}
+        <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600 hover:prose-a:underline prose-img:rounded-md prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw, rehypeSlug]}
+          >
+            {post.content}
+          </ReactMarkdown>
         </div>
 
         {/* Share Buttons */}
         <div className="mt-10 border-t pt-6">
           <h3 className="text-lg font-semibold mb-2">Share this post</h3>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`}
               target="_blank" rel="noopener noreferrer"

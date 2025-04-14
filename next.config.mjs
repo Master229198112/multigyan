@@ -9,7 +9,15 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/uploads/**',
+      }
     ],
+    // Enable static image loading from /public folder
+    unoptimized: true,
   },
 };
 

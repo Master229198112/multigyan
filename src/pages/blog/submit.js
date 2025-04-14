@@ -1,13 +1,33 @@
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function SubmitPost() {
   const [formData, setFormData] = useState({
     title: '', slug: '', content: '', category: '', tags: '', image: '', email: ''
   })
   const [submitted, setSubmitted] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
-  const handleChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
+
+  const handleImageUpload = async e => {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+
+    const form = new FormData()
+    form.append('file', file)
+
+    const res = await fetch('/api/upload', { method: 'POST', body: form })
+    const data = await res.json()
+
+    if (data.success) {
+      setFormData(prev => ({ ...prev, image: data.thumbnail }))
+    } else {
+      alert('❌ Image upload failed.')
+    }
+    setUploading(false)
+  }
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -17,12 +37,16 @@ export default function SubmitPost() {
       body: JSON.stringify({
         ...formData,
         tags: formData.tags.split(',').map(t => t.trim()),
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+        date: new Date().toLocaleDateString('en-US', {
+          year: 'numeric', month: 'short', day: 'numeric'
+        }),
         readTime: getReadTime(formData.content),
-        approved: false // public posts need admin approval
+        approved: false
       })
     })
-    setSubmitted(true)
+
+    if (res.ok) setSubmitted(true)
+    else alert('❌ Submission failed.')
   }
 
   return (
@@ -36,7 +60,27 @@ export default function SubmitPost() {
           <input name="slug" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Slug" required />
           <input name="category" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Category" />
           <input name="tags" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Tags (comma separated)" />
-          <input name="image" onChange={handleChange} className="w-full p-2 border rounded" placeholder="Image URL" />
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="block w-full p-2 border rounded bg-white text-black"
+            />
+            {uploading && <p className="text-sm text-gray-500 mt-1">Uploading image...</p>}
+            {formData.image && (
+              <Image
+                src={formData.image}
+                alt="Preview"
+                width={500}
+                height={300}
+                className="rounded shadow mt-3"
+              />
+            )}
+          </div>
+
           <input
             name="email"
             type="email"
@@ -45,8 +89,11 @@ export default function SubmitPost() {
             placeholder="Your Email (optional)"
             className="w-full p-2 border rounded"
           />
+
           <textarea name="content" onChange={handleChange} className="w-full h-40 p-2 border rounded" placeholder="Markdown Content" required />
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Submit for Review</button>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+            Submit for Review
+          </button>
         </form>
       )}
     </div>

@@ -20,8 +20,34 @@ export default async function handler(req, res) {
 
     case 'POST':
       try {
-        const post = await Post.create(req.body)
+        // ✅ Destructure body to ensure all fields are handled properly
+        const {
+          title,
+          slug,
+          content,
+          category,
+          tags,
+          image,
+          email,
+          date,
+          readTime,
+          approved
+        } = req.body
 
+        const post = await Post.create({
+          title,
+          slug,
+          content,
+          category,
+          tags,
+          image, // ✅ Make sure image is stored
+          email,
+          date,
+          readTime,
+          approved
+        })
+
+        // ✉️ Send emails
         const nodemailer = require('nodemailer')
 
         const transporter = nodemailer.createTransport({
@@ -35,7 +61,7 @@ export default async function handler(req, res) {
         })
 
         if (!post.approved) {
-          // Send notification to admin
+          // Email to admin(s)
           await transporter.sendMail({
             from: `"Multigyan" <${process.env.EMAIL_USER}>`,
             to: process.env.EMAIL_TO,
@@ -50,6 +76,7 @@ export default async function handler(req, res) {
         }
 
         if (post.email) {
+          // Auto-reply to submitter
           await transporter.sendMail({
             from: `"Multigyan" <${process.env.EMAIL_USER}>`,
             to: post.email,
