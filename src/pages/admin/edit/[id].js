@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
 import Image from 'next/image'
+import MarkdownPreview from '@/components/MarkdownPreview'
+import dynamic from 'next/dynamic'
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
+import 'easymde/dist/easymde.min.css'
 
 export default function EditPost() {
   const router = useRouter()
@@ -118,7 +120,18 @@ export default function EditPost() {
           )}
         </div>
 
-        <textarea name="content" value={formData.content} onChange={handleChange} className="w-full border p-2 rounded h-40" placeholder="Markdown content" />
+        <div>
+          <label className="block text-sm font-medium mb-1">Post Content (Markdown)</label>
+          <SimpleMDE
+            value={formData.content}
+            onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+            options={{
+              spellChecker: false,
+              placeholder: 'Update your blog post in markdown...',
+            }}
+          />
+        </div>
+
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Preview Changes</button>
       </form>
 
@@ -138,11 +151,7 @@ export default function EditPost() {
               {new Date().toLocaleDateString()} • {getReadTime(formData.content)}
             </p>
 
-            <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                {formData.content}
-              </ReactMarkdown>
-            </div>
+            <MarkdownPreview content={formData.content} />
 
             <div className="flex justify-end gap-3 mt-6">
               <button onClick={() => setShowPreview(false)} className="px-4 py-2 text-sm rounded border">

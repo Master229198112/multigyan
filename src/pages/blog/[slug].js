@@ -1,11 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
 import Comments from '@/components/Comments'
+import MarkdownPreview from '@/components/MarkdownPreview'
 
 export default function PostPage() {
   const router = useRouter()
@@ -15,7 +12,6 @@ export default function PostPage() {
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
-  // Scroll progress bar
   useEffect(() => {
     const progress = document.getElementById('scroll-progress')
     const updateScroll = () => {
@@ -36,7 +32,7 @@ export default function PostPage() {
         .then(data => {
           if (data.success) {
             setPost(data.data)
-            fetch(`/api/views/${slug}`, { method: 'POST' }) // increment view count
+            fetch(`/api/views/${slug}`, { method: 'POST' }) // track views
           }
           setLoading(false)
         })
@@ -53,16 +49,14 @@ export default function PostPage() {
 
       <div className="max-w-3xl mx-auto px-4 py-10 pt-20">
         {/* Cover Image */}
-        {post.image && (
-          <div className="relative h-72 sm:h-96 mb-6 rounded-lg overflow-hidden shadow">
-            <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              className="object-cover w-full h-full"
-            />
-          </div>
-        )}
+        <div className="relative h-72 sm:h-96 mb-6 rounded-lg overflow-hidden shadow">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover w-full h-full"
+          />
+        </div>
 
         {/* Post Metadata */}
         <div className="mb-4">
@@ -73,16 +67,8 @@ export default function PostPage() {
           </p>
         </div>
 
-        {/* Markdown Content with enhancements */}
-        <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600 prose-img:rounded-md prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeSlug]}
-            linkTarget="_blank"
-          >
-            {post.content}
-          </ReactMarkdown>
-        </div>
+        {/* Markdown Content via shared component */}
+        <MarkdownPreview content={post.content} />
 
         {/* Share Buttons */}
         <div className="mt-10 border-t pt-6">

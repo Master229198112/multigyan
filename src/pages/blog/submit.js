@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
+import dynamic from 'next/dynamic'
+import MarkdownPreview from '@/components/MarkdownPreview'
+
+// Dynamically import SimpleMDE (no SSR issues)
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
+import 'easymde/dist/easymde.min.css'
 
 export default function SubmitPost() {
   const [formData, setFormData] = useState({
@@ -115,14 +118,19 @@ export default function SubmitPost() {
             placeholder="Your Email (optional)"
             className="w-full p-2 border rounded"
           />
-          <textarea
-            name="content"
-            onChange={handleChange}
-            value={formData.content}
-            className="w-full h-40 p-2 border rounded"
-            placeholder="Markdown Content"
-            required
-          />
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Post Content (Markdown)</label>
+            <SimpleMDE
+              value={formData.content}
+              onChange={(value) => setFormData({ ...formData, content: value })}
+              options={{
+                spellChecker: false,
+                placeholder: 'Write your blog post in markdown...',
+              }}
+            />
+          </div>
+
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
             Preview Post
           </button>
@@ -151,11 +159,7 @@ export default function SubmitPost() {
               {new Date().toLocaleDateString()} • {getReadTime(formData.content)}
             </p>
 
-            <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                {formData.content}
-              </ReactMarkdown>
-            </div>
+            <MarkdownPreview content={formData.content} />
 
             <div className="flex justify-end gap-3 mt-6">
               <button

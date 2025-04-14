@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+import MarkdownPreview from '@/components/MarkdownPreview'
+
+// Dynamically load the markdown editor to avoid SSR issues
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
+
+import 'easymde/dist/easymde.min.css' // Editor styles
 
 export default function AdminCreatePost() {
   const router = useRouter()
@@ -98,7 +102,18 @@ export default function AdminCreatePost() {
           )}
         </div>
 
-        <textarea name="content" onChange={handleChange} value={formData.content} placeholder="Markdown Content" className="w-full h-40 p-2 border rounded" required />
+        <div>
+          <label className="block text-sm font-medium mb-1">Post Content (Markdown)</label>
+          <SimpleMDE
+            value={formData.content}
+            onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+            options={{
+              placeholder: 'Write your post in markdown...',
+              spellChecker: false
+            }}
+          />
+        </div>
+
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Preview Post</button>
       </form>
 
@@ -116,11 +131,7 @@ export default function AdminCreatePost() {
             <h1 className="text-2xl font-bold mb-1">{formData.title}</h1>
             <p className="text-sm text-gray-500 mb-4">{new Date().toLocaleDateString()} • {getReadTime(formData.content)}</p>
 
-            <div className="prose dark:prose-invert max-w-none prose-lg prose-a:text-blue-600">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                {formData.content}
-              </ReactMarkdown>
-            </div>
+            <MarkdownPreview content={formData.content} />
 
             <div className="flex justify-end gap-3 mt-6">
               <button onClick={() => setShowPreview(false)} className="px-4 py-2 text-sm rounded border">Back to Edit</button>
